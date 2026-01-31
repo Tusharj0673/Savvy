@@ -76,6 +76,29 @@ const TransactionTable = ({ transactions = [] }) => {
     field: "date",
     direction: "desc",
   });
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleTypeChange = (value) => {
+    setTypeFilter(value);
+    setCurrentPage(1);
+  };
+
+  const handleRecurringChange = (value) => {
+    setRecurringFilter(value);
+    setCurrentPage(1);
+  };
+
+  const handleSort = (field) => {
+    setSortConfig((c) => ({
+      field,
+      direction:
+        c.field === field && c.direction === "asc" ? "desc" : "asc",
+    }));
+    setCurrentPage(1);
+  };
 
   const {
     loading: deleteLoading,
@@ -124,13 +147,6 @@ const TransactionTable = ({ transactions = [] }) => {
     startIndex + ITEMS_PER_PAGE
   );
 
-  const handleSort = (field) => {
-    setSortConfig((c) => ({
-      field,
-      direction:
-        c.field === field && c.direction === "asc" ? "desc" : "asc",
-    }));
-  };
 
   const handleSelect = (id) => {
     setSelectedIds((c) =>
@@ -164,9 +180,6 @@ const TransactionTable = ({ transactions = [] }) => {
     }
   }, [deleted, deleteLoading]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, typeFilter, recurringFilter, sortConfig]);
 
   return (
     <div className="space-y-4">
@@ -176,16 +189,17 @@ const TransactionTable = ({ transactions = [] }) => {
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            className="pl-8"
-            placeholder="Search transactions..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+     <Input
+  className="pl-8"
+  placeholder="Search transactions..."
+  value={searchTerm}
+  onChange={handleSearchChange}
+ />
+
         </div>
 
         <div className="flex gap-2">
-          <Select value={typeFilter} onValueChange={setTypeFilter}>
+        <Select value={typeFilter} onValueChange={handleTypeChange}>
             <SelectTrigger>
               <SelectValue placeholder="All types" />
             </SelectTrigger>
@@ -194,8 +208,8 @@ const TransactionTable = ({ transactions = [] }) => {
               <SelectItem value="EXPENSE">Expense</SelectItem>
             </SelectContent>
           </Select>
+<Select value={recurringFilter} onValueChange={handleRecurringChange}>
 
-          <Select value={recurringFilter} onValueChange={setRecurringFilter}>
             <SelectTrigger>
               <SelectValue placeholder="All transactions" />
             </SelectTrigger>
