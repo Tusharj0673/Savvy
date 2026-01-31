@@ -41,19 +41,33 @@ Clone the repository:
 git clone https://github.com/Tusharj0673/Savvy.git
 cd Savvy
 
-Create a .env file in the root of the project and add the following variables:
-
+# ===============================
+# Database
+# ===============================
 DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE
 
+# ===============================
+# Clerk Authentication
+# ===============================
 CLERK_SECRET_KEY=
 CLERK_PUBLISHABLE_KEY=
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 CLERK_WEBHOOK_SECRET=
 
+# ===============================
+# Email (Resend)
+# ===============================
 RESEND_API_KEY=
 
-
+# ===============================
+# AI Insights (Gemini)
+# ===============================
 GEMINI_API_KEY=
 
+# ===============================
+# Security (Arcjet)
+# ===============================
 ARCJET_KEY=
+
+
 
