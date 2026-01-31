@@ -4,12 +4,6 @@ import { auth } from "@clerk/nextjs/server";
 import { subBusinessDays } from "date-fns";
 import { revalidatePath } from "next/cache";  
 
-// const serializeTransaction = (obj) =>{
-//    const serialzied ={...obj};
-//    if(obj.balance){
-//       serialzied.balance = obj.balance.toNumber();
-//    }
-// };
 const serializeTransaction = (obj) => {
   const serialized = { ...obj };
   if (obj.balance?.toNumber) {

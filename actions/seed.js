@@ -43,7 +43,6 @@ function getRandomCategory(type) {
 
 export async function seedTransactions() {
   try {
-    // Generate 90 days of transactions
     const transactions = [];
     let totalBalance = 0;
 

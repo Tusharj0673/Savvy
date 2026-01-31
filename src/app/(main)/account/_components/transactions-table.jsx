@@ -30,16 +30,6 @@ const TransactionTable = ({ transactions }) => {
 
 const router = useRouter();
 const [selectedIds , setSelectedIds] = useState([]);
-// const[sortConfid , setSortConfig] = useState({
-//   field:"date",
-//   direction: "desc",
-// });
-//   const handleSort = (field) => {
-//     sortConfig(current=>({
-//     field,
-//     direction:current.field==field && current.direction === "asc" ?"desc":"asc",
-//     }));  
-//   };
 const [sortConfig, setSortConfig] = useState({
   field: "date",
   direction: "desc",
@@ -197,7 +187,7 @@ useEffect(() => {
 </Select>
 
     <Select value={recurringFilter} onValueChange={(value)=> setRecurringFilter(value)}>
-  <SelectTrigger className="w-[150px]" >
+  <SelectTrigger className="w-37.5" >
     <SelectValue placeholder="All Transactions" />
   </SelectTrigger>
   <SelectContent>
@@ -222,7 +212,7 @@ useEffect(() => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[50px]">
+              <TableHead className="w-12.5">
                 <Checkbox onCheckedChange={handleSelectAll}
                   checked={
                     selectedIds.length === filteredAndSortedTransaction.length && filteredAndSortedTransaction.length > 0 
@@ -267,7 +257,7 @@ useEffect(() => {
               </TableHead>
 
               <TableHead>Recurring</TableHead>
-              <TableHead className="w-[50px]" />
+              <TableHead className="w-12.5" />
             </TableRow>
           </TableHeader>
 

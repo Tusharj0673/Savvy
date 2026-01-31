@@ -6,8 +6,6 @@ import TransactionTable from "../_components/transactions-table";
 import AccountChart from "../_components/account-chart";
 import { BarLoader } from "react-spinners";
 
-
-// Local formatting function (same logic as AccountCard)
 const formatCurrency = (value) => {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -15,10 +13,8 @@ const formatCurrency = (value) => {
   }).format(Number(value));
 };
 
-// const AccountsPage = async ({ params }) => {
-//   const accountData = await getAccountWithTransaction(params.id);
 const AccountsPage = async ({ params }) => {
-  const { id } = await params;   // <-- FIX
+  const { id } = await params;   
 
   const accountData = await getAccountWithTransaction(id);
 

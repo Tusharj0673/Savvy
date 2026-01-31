@@ -84,7 +84,6 @@ export default function EmailTemplate({
         <Container style={styles.container}>
             <Heading style={styles.title}>Budget Alert</Heading>
             <Text style={styles.text}>Hello {userName},</Text>
-            {/* <Text style={styles.text}>You&rsquo;ve used {data?.percentageUsed.toFixed(1)}% of your monthly budget.</Text> */}
             <Text style={styles.text}>You&rsquo;ve used {(data?.percentageUsed ?? 0).toFixed(1)}% of your monthly budget.</Text>
             <Section style={styles.statsContainer}>
                 <div style={styles.stat}>
@@ -97,7 +96,6 @@ export default function EmailTemplate({
                 </div>
                 <div style={styles.stat}>
                     <Text style={styles.text}>Remaining</Text>
-                    {/* <Text style={styles.heading}>₹{data?.budgetAmount- data?.totalExpenses}</Text> */}
                     <Text style={styles.heading}>  ₹{((data?.budgetAmount || 0) - (data?.totalExpenses || 0)).toFixed(2)}</Text>
                 </div>
             </Section>

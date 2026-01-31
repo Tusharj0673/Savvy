@@ -1,144 +1,3 @@
-
-// import { inngest } from "./client";
-// import { db } from "@/lib/prisma";
-// import { sendEmail } from "../../../actions/send-email";
-// import EmailTemplate from "../../emails/template";
-// import { Resend } from "resend";
-// const resend = new Resend(process.env.RESEND_API_KEY || "");
-// import { render } from "@react-email/render";
-
-
-// export const checkBudgetAlert = inngest.createFunction(
-//   { name: "Check Budget Alert" },
-//   { cron: "0 */6 * * *" },
-//   async ({ step }) => {
-//     const budgets = await step.run("fetch-budget", async () => {
-//       return await db.budget.findMany({
-//         include: {
-//           user: {
-//             include: {
-//               accounts: {
-//                 where: { isDefault: true },
-//               },
-//             },
-//           },
-//         },
-//       });
-//     });
-
-//     for (const budget of budgets) {
-//       const defaultAccount = budget.user.accounts[0];
-//       if (!defaultAccount) continue;
-
-//       await step.run(`check-budget-${budget.id}`, async () => {
-//         // const startDate = new Date();
-//         // startDate.setDate(1);
-
-//      const currentDate = new Date();
-//     const startOfMonth = new Date(
-//       currentDate.getFullYear(),
-//       currentDate.getMonth(), 
-//       1
-//     );
-//     const endOfMonth = new Date(
-//       currentDate.getFullYear(),
-//       currentDate.getMonth() + 1,
-//       0
-//     );
-
-//         const expenses = await db.transaction.aggregate({
-//           where: {
-//             userId: budget.userId,
-//             accountId: defaultAccount.id,
-//             type: "EXPENSE",
-//             date: { gte: startOfMonth,
-//           lte: endOfMonth, },
-//           },
-//           _sum: { amount: true },
-//         });
-
-//         const totalExpenses = expenses._sum.amount?.toNumber() || 0;
-//         const budgetAmount = budget.amount;
-//         const percentageUsed = (totalExpenses / budgetAmount) * 100;
-
-//         if (
-//           percentageUsed >= 80 &&
-//           (!budget.lastAlertSent ||
-//             isNewMonth(new Date(budget.lastAlertSent), new Date()))
-//         ) {  
-//           // // Send email
-//           // await sendEmail({
-//           //   to: budget.user.email,
-//           //   subject: `Budget Alert for ${defaultAccount.name}`,
-//           //   react: EmailTemplate({
-//           //     username:budget.user.name,
-//           //     type: "budget-alert",
-//           //     data: {
-//           //       percentageUsed,
-//           //       budgetAmount: parseInt(budgetAmount).toFixed(1),
-//           //       totalExpenses: parseInt(totalExpenses).toFixed(1),
-//           //       accountName: defaultAccount.name, 
-//           //     },
-//           //   }),
-//           // });
-// // await step.run("send-email", async () => {
-// //   await resend.emails.send({
-// //     from: "Finance App <onboarding@resend.dev>", // must be verified
-// //     to: budget.user.email,
-// //     subject: `Budget Alert for ${defaultAccount.name}`,
-// //     react: EmailTemplate({
-// //       userName: budget.user.name,
-// //       type: "budget-alert",
-// //       data: {
-// //         percentageUsed,
-// //         budgetAmount: Number(budgetAmount).toFixed(1),
-// //         totalExpenses: Number(totalExpenses).toFixed(1),
-// //         accountName: defaultAccount.name,
-// //       },
-// //     }),
-// //   });
-// // });
-
-// await step.run("send-email", async () => {
-//   const html = render(
-//     <EmailTemplate
-//       userName={budget.user.name}
-//       type="budget-alert"
-//       data={{
-//         percentageUsed,
-//         budgetAmount: Number(budget.amount).toFixed(1),
-//         totalExpenses: Number(totalExpenses).toFixed(1),
-//         accountName: defaultAccount.name,
-//       }}
-//     />
-//   );
-
-//   await resend.emails.send({
-//     from: "Finance App <onboarding@resend.dev>",
-//     to: budget.user.email,
-//     subject: `Budget Alert for ${defaultAccount.name}`,
-//     html, // pass rendered HTML instead of JSX
-//   });
-// });
-
-//           // Update last alert sent
-//           await db.budget.update({
-//             where: { id: budget.id },
-//             data: { lastAlertSent: new Date() },
-//           });
-//         }
-//       });
-//     }
-//   }
-// );
-
-// function isNewMonth(lastAlertDate, currentDate) {
-//   return (
-//     lastAlertDate.getMonth() !== currentDate.getMonth() ||
-//     lastAlertDate.getFullYear() !== currentDate.getFullYear()
-//   );
-// }
-
 import { inngest } from "./client";
 import { db } from "@/lib/prisma";
 import EmailTemplate from "../../emails/template";
@@ -265,7 +124,7 @@ function isNewMonth(lastAlertDate, currentDate) {
 
 export const triggerRecurringTransactions = inngest.createFunction(
   {
-    id: "trigger-recurring-transactions", // Unique ID,
+    id: "trigger-recurring-transactions", 
     name: "Trigger Recurring Transactions",
   },
   { cron: "0 0 * * *" }, // Daily at midnight
@@ -309,7 +168,6 @@ export const processRecurringTransaction = inngest.createFunction(
     },
   },
   {event:"transaction.recurring.process"},
-  // async({event,stop})=>{
     async ({ event, step, stop }) => {
 
     if(!event?.data?.transactionId || !event?.data?.userId){
@@ -326,7 +184,6 @@ export const processRecurringTransaction = inngest.createFunction(
           account: true,
         },
     });
-      // if (!transaction || !isTransactionDue(transaction)) return;
 const isManualRun = event.data?.manual === true;
 
 if (!transaction) {
@@ -410,79 +267,12 @@ function calculateNextRecurringDate(startDate, interval) {
   return date;
 }
 
-// export const generateMonthlyReports = inngest.createFunction(
-//     {
-//     id: "generate-monthly-reports",
-//     name: "Generate Monthly Reports",
-//   },
-//   { cron: "0 0 1 * *" }, // First day of each month
-// async({step})=>{
-//   const users = await step.run("fetch-users",async()=>{
-//     return await db.user.findMany({
-//       include:{accounts:true},
-//     });
-//   });
-// //  for (const user of users){
-// //   await step.run(`generate-report-${user.id}`,async ()=>{
-// //     const lastMonth = new Date();
-// //     lastMonth.setMonth(lastMonth.getMonth()-1);
-
-// //     const stats = await getMonthlyStats(user.id,lastMonth);
-// //     const monthName = lastMonth.toLocaleString("default",{
-// //  month:"long",
-// //     });
-// //     const insights = await generateFinancialInsights(stats,monthName);
-
-// //     await sendEmail({
-// //           to: user.email,
-// //           subject: `Your Monthly Financial Report - ${monthName}`,
-// //           react: EmailTemplate({
-// //             userName: user.name,
-// //             type: "monthly-report",
-// //             data: {
-// //               stats,
-// //               month: monthName,
-// //               insights,
-// //             },
-// //           }),
-// //         });
-// //   });
-// //  }
-// await step.run("generate-all-monthly-reports", async () => {
-//   for (const user of users) {
-//     const lastMonth = new Date();
-//     lastMonth.setMonth(lastMonth.getMonth() - 1);
-
-//     const stats = await getMonthlyStats(user.id, lastMonth);
-//     const monthName = lastMonth.toLocaleString("default", { month: "long" });
-//     const insights = await generateFinancialInsights(stats, monthName);
-
-//     await sendEmail({
-//       to: user.email,
-//       subject: `Your Monthly Financial Report - ${monthName}`,
-//       react: EmailTemplate({
-//         userName: user.name ?? "",
-//         type: "monthly-report",
-//         data: {
-//           stats,
-//           month: monthName,
-//           insights,
-//         },
-//       }),
-//     });
-//   }
-// });
-
-//  return {processed:users.length};
-// }
-// );
-
 export const generateMonthlyReports = inngest.createFunction(
   {
     id: "generate-monthly-reports",
     name: "Generate Monthly Reports",
   },
-  { cron: "0 0 1 * *" }, // you can still manual invoke
+  { cron: "0 0 1 * *" }, 
   async ({ step }) => {
     const users = await step.run("fetch-users", async () => {
       return db.user.findMany();
@@ -574,41 +364,6 @@ async function generateFinancialInsights(stats, month) {
     ];
   }
 }
-
-// async function getMonthlyStats(userId, month) {
-//   const startDate = new Date(month.getFullYear(), month.getMonth(), 1);
-//   const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
-
-//   const transactions = await db.transaction.findMany({
-//     where: {
-//       userId,
-//       date: {
-//         gte: startDate,
-//         lte: endDate,
-//       },
-//     },
-//   });
-
-//   return transactions.reduce(
-//     (stats, t) => {
-//       const amount = t.amount.toNumber();
-//       if (t.type === "EXPENSE") {
-//         stats.totalExpenses += amount;
-//         stats.byCategory[t.category] =
-//           (stats.byCategory[t.category] || 0) + amount;
-//       } else {
-//         stats.totalIncome += amount;
-//       }
-//       return stats;
-//     },
-//     {
-//       totalExpenses: 0,
-//       totalIncome: 0,
-//       byCategory: {},
-//       transactionCount: transactions.length,
-//     }
-//   );
-// }
 async function getMonthlyStats(userId, month) {
   const startDate = new Date(month.getFullYear(), month.getMonth(), 1);
   const endDate = new Date(month.getFullYear(), month.getMonth() + 1, 0);
@@ -644,8 +399,6 @@ async function getMonthlyStats(userId, month) {
       transactionCount: transactions.length,
     }
   );
-
-  // ✅ FIX TO 2 DECIMAL PLACES (NO LOGIC CHANGE)
   stats.totalIncome = Number(stats.totalIncome.toFixed(2));
   stats.totalExpenses = Number(stats.totalExpenses.toFixed(2));
 

@@ -1,8 +1,6 @@
 "use client"
 
-
 import Link from 'next/link'
-// import React from 'react'
 import { Button } from './ui/button'
 import Image from 'next/image'
 
@@ -14,7 +12,6 @@ const HeroSection = () => {
      const imageRef = useRef(null);
 
      useEffect(() => {
-      // const imageElement = imageRef.current;
         const handleScroll = () =>{
          const scrollPosition = window.scrollY;
          const scrollThreshold = 100;

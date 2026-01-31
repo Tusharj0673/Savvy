@@ -1,17 +1,10 @@
-// import HeroSection from "@/components/hero";
 import HeroSection from "@/components/hero.jsx";
-
 import { Button } from "@/components/ui/button";
 import { Stats } from "fs";
 import Image from "next/image";
-// import { Button } from "../../ui/button";
-// import {statsData} from "@/data/landing";
 import { statsData ,featuresData, howItWorksData, testimonialsData} from "../../data/landing";
 import { Card , CardContent } from "@/components/ui/card";
 import Link from "next/link";
-
-
-
 
 export default function Home() {
   return (
