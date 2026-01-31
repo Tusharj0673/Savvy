@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev ",
     "email": "email dev --dir src/emails",
-    "build": "next build --webpack",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "postinstall":"prisma generate"
