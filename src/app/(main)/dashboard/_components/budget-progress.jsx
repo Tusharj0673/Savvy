@@ -60,14 +60,16 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
     setNewBudget(budget?.amount?.toString() || "");
     setIsEditing(false);
   };
-
-  useEffect(() => {
-    if (updatedBudget?.success) {
-      setBudget(updatedBudget.data);    
+useEffect(() => {
+  if (updatedBudget?.success) {
+    queueMicrotask(() => {
+      setBudget(updatedBudget.data);
       setIsEditing(false);
-      toast.success("Budget updated successfully");
-    }
-  }, [updatedBudget]);
+    });
+    toast.success("Budget updated successfully");
+  }
+}, [updatedBudget]);
+
 
   useEffect(() => {
     if (error) {
