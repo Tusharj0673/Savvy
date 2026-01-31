@@ -1,0 +1,7 @@
+diff --git a/node_modules/react-day-picker/dist/esm/classes/DateLib.js b/node_modules/react-day-picker/dist/esm/classes/DateLib.js
+index 0e6c1df..b3d82c5 100644
+--- a/node_modules/react-day-picker/dist/esm/classes/DateLib.js
++++ b/node_modules/react-day-picker/dist/esm/classes/DateLib.js
+@@ -1,6 +1,6 @@
+-import { enUS } from "date-fns/locale/en-US";
++import { enUS } from "date-fns/locale";
